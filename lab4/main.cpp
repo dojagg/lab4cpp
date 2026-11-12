@@ -1,7 +1,6 @@
 #include <iostream>
 #include <locale.h>
 #include "Menu.h"
-#define MAX_SIZE 20
 
 int main()
 {
@@ -10,13 +9,12 @@ int main()
 
 	do
 	{
-		int N = 0;                                                      
-		Watch* catalog[MAX_SIZE];                                       // массив на 20 элементов
+		Queue<Watch*> catalog;
 
 		int fillMode;
 		std::cout << "\nРЕЖИМ ЗАПОЛНЕНИЯ (1 - Вручную, 2 - Подготовленный вариант): ";
 		std::cin >> fillMode;
-		fillCatalog(catalog, N, fillMode);                              // заполняем каталог
+		fillCatalog(catalog, fillMode);                              // заполняем каталог
 
 		int menuChoice;
 		do
@@ -32,32 +30,45 @@ int main()
 
 			if (menuChoice >= 1 && menuChoice <= 3)
 			{
-				showCatalog(catalog, N, menuChoice);
+				showCatalog(catalog, menuChoice);
 				int choice;
 				std::cout << "1. Изменить цену" << std::endl;
 				std::cout << "2. Добавить новые часы" << std::endl;
-				std::cout << "3. Продолжить без изменений" << std::endl;
+				std::cout << "3. Удалить часы" << std::endl;
+				std::cout << "4. Найти часы по бренду" << std::endl;
+				std::cout << "5. Продолжить без изменений" << std::endl;
 				std::cout << "Выбор: ";
 				std::cin >> choice;
 				if (choice == 1)
 				{
-					editWatchPrice(catalog, N);                             // изменение цены
-					showCatalog(catalog, N, menuChoice);
+					editWatchPrice(catalog);                             // изменение цены
+					showCatalog(catalog, menuChoice);
 				}
 				else if (choice == 2)
 				{
-					addWatch(catalog, N, menuChoice);                                   // добавление новых часов
-					showCatalog(catalog, N, menuChoice);
+					addWatch(catalog, menuChoice);                                   // добавление новых часов
+					showCatalog(catalog, menuChoice);
 				}
 				else if (choice == 3)
 				{
-					continue;
+					deleteWatch(catalog);
+					showCatalog(catalog, menuChoice);
 				}
+				else if (choice == 4)
+					findWatch(catalog);
+				
+				else if (choice == 5)
+					continue;
+				
 			}
 		} while (menuChoice != 4);                                      
 
-		for (int i = 0; i < N; i++)
-			delete catalog[i];                                          // удаляем созданные объекты
+		item<Watch*>* cur = catalog.getBegin();
+		while (cur != nullptr)
+		{
+			delete cur->data; 
+			cur = cur->next;
+		}
 
 		std::cout << "\nПовторить запуск программы? (y/n): ";
 		std::cin >> restartChoice;
