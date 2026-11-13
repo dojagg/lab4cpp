@@ -5,18 +5,18 @@
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	char restartChoice;
+	char restartChoice;                                                 
 
 	do
 	{
-		Queue<Watch*> catalog;
+		Queue<Watch*> catalog;                                          // создание очереди
 
-		int fillMode;
+		int fillMode;                                                   // выбор режима заполнения
 		std::cout << "\nРЕЖИМ ЗАПОЛНЕНИЯ (1 - Вручную, 2 - Подготовленный вариант): ";
 		std::cin >> fillMode;
-		fillCatalog(catalog, fillMode);                              // заполняем каталог
+		fillCatalog(catalog, fillMode);                              // заполнение каталога
 
-		int menuChoice;
+		int menuChoice;                                                 
 		do
 		{
 			std::cout << "\n МЕНЮ ВЫБОРА" << std::endl;
@@ -26,12 +26,12 @@ int main()
 			std::cout << "4. Выход" << std::endl;
 			std::cout << "Действие: ";
 			std::cin >> menuChoice;
-			std::cin.ignore();                                         // УЗНАТЬ КАК РАБОТАЕТ
+			std::cin.ignore();
 
 			if (menuChoice >= 1 && menuChoice <= 3)
 			{
-				showCatalog(catalog, menuChoice);
-				int choice;
+				showCatalog(catalog, menuChoice);                       // вывод выбранной категории
+				int choice;                                             // выбор операции подменю
 				std::cout << "1. Изменить цену" << std::endl;
 				std::cout << "2. Добавить новые часы" << std::endl;
 				std::cout << "3. Удалить часы" << std::endl;
@@ -46,27 +46,27 @@ int main()
 				}
 				else if (choice == 2)
 				{
-					addWatch(catalog, menuChoice);                                   // добавление новых часов
+					addWatch(catalog, menuChoice);                       // добавление новых часов
 					showCatalog(catalog, menuChoice);
 				}
 				else if (choice == 3)
 				{
-					deleteWatch(catalog);
+					deleteWatch(catalog);                               // удаление выбранных часов
 					showCatalog(catalog, menuChoice);
 				}
 				else if (choice == 4)
-					findWatch(catalog);
-				
+					findWatch(catalog);                                 // поиск часов по названию бренда
+
 				else if (choice == 5)
 					continue;
-				
-			}
-		} while (menuChoice != 4);                                      
 
-		item<Watch*>* cur = catalog.getBegin();
+			}
+		} while (menuChoice != 4);
+
+		item<Watch*>* cur = catalog.getBegin();                         
 		while (cur != nullptr)
 		{
-			delete cur->data; 
+			delete cur->data;                                           // удаление самих часов из памяти
 			cur = cur->next;
 		}
 
@@ -78,4 +78,3 @@ int main()
 	return 0;
 
 }
-
