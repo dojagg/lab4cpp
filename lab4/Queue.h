@@ -159,11 +159,10 @@ item<T>* Queue<T>::find(T node) const
 template <class T>
 bool Queue<T>::remove(T node)
 {
-	item<T>* cur = this->begin;
-	while (cur != nullptr && cur->data != node)
-	{
-		cur = cur->next;
-	}
+	item<T>* cur = this->find(node);
+	if (cur == nullptr)
+		return;
+	
 	if (cur == this->begin)
 		this->pop_front();
 	else if (cur == this->end)
